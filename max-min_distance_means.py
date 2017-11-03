@@ -7,13 +7,11 @@ df = pd.read_csv(path)
 print("请指定索引列,输入作为数据索引的列的名称:")
 index_name = input("column_name: ")
 df = df.set_index([index_name])
+
 dots = []
 row_number = len(df.index)
 for i in range(1, row_number+1):
     dots.append(df.loc[[i]])
-columns = []
-for co in df.columns:
-    columns.append(co)
 
 
 def calcu_distance(dot1, dot2):
