@@ -3,8 +3,8 @@ import pandas as pd
 
 
 def calcu_dot_distance(dot1, dot2):
-    np_vec1 = np.array(dot1)
-    np_vec2 = np.array(dot2)
+    np_vec1 = np.array(dot1.values)
+    np_vec2 = np.array(dot2.values)
     return np.linalg.norm(np_vec1 - np_vec2)
 
 
@@ -35,7 +35,7 @@ def clustering(df_, t):
     classes_ = []
     row_number = len(df_.index)
     for k in range(1, row_number+1):
-        ci = [df_.loc[[k]].values]
+        ci = [df_.loc[[k]]]
         classes_.append(ci)
 
     matrix_ = []
@@ -68,6 +68,6 @@ index_name = input("column_name: ")
 df = df.set_index([index_name])
 print("请输入层次聚类法的阈值:")
 threshold = input("threshold: ")
-mat = clustering(df, threshold)
+mat = clustering(df, float(threshold))
 for b in range(len(mat)):
     print(mat[b])
