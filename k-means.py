@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def calcu_distance(dot, center):
-    np_vec1 = np.array(dot.values)
+    np_vec1 = dot.values
     np_vec2 = center
     return np.linalg.norm(np_vec1 - np_vec2)
 
@@ -13,7 +13,7 @@ def kmeans(df_, k):
     obj_belong = np.array(np.zeros(obj_num))
     centers = []
     for a in range(k):
-        cj = np.array(df_.loc[[a]].values)
+        cj = np.array(df_.loc[a].values)
         centers.append(cj)
     is_change = True
 
@@ -23,7 +23,7 @@ def kmeans(df_, k):
             min_dot_center = np.inf
             min_index = 0
             for j in range(k):
-                d = calcu_distance(df_.loc[[i]], centers[j])
+                d = calcu_distance(df_.loc[i], centers[j])
                 if d < min_dot_center:
                     min_dot_center = d
                     min_index = j
@@ -34,8 +34,8 @@ def kmeans(df_, k):
             index_set_h = np.where(obj_belong == h)[0]
             list_ = []
             for ind in index_set_h:
-                list_.append(df_.loc[[ind]].values)
-            new_center_vec = np.mean(np.mat(np.array(list_)), axis=0)
+                list_.append(df_.loc[ind].values)
+            new_center_vec = np.mean(np.mat(list_), axis=0)
             centers[h] = np.array(new_center_vec[0])
     return obj_belong
 

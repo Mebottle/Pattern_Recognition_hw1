@@ -3,8 +3,8 @@ import pandas as pd
 
 
 def calcu_dot_distance(dot1, dot2):
-    np_vec1 = np.array(dot1.values)
-    np_vec2 = np.array(dot2.values)
+    np_vec1 = dot1.values
+    np_vec2 = dot2.values
     return np.linalg.norm(np_vec1 - np_vec2)
 
 
