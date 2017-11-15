@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 def calcu_dot_distance(dot1, dot2):
@@ -8,6 +9,7 @@ def calcu_dot_distance(dot1, dot2):
     return np.linalg.norm(np_vec1 - np_vec2)
 
 
+# 计算两个类之间的距离,采用最短距离法
 def calcu_class_distance(list1, list2):
     min_dot_distance = np.inf
     for dot1 in list1:
@@ -18,6 +20,7 @@ def calcu_class_distance(list1, list2):
     return min_dot_distance
 
 
+# 寻找到距离矩阵中最小的元素,返回该元素的行列索引,以及该元素值
 def find_min_class_distance(matrix_):
     min_class_distance = np.inf
     x = 0
@@ -34,8 +37,8 @@ def find_min_class_distance(matrix_):
 def clustering(df_, t):
     classes_ = []
     row_number = len(df_.index)
-    for k in range(1, row_number+1):
-        ci = [df_.loc[[k]]]
+    for k in range(row_number):
+        ci = [df_.loc[k]]
         classes_.append(ci)
 
     matrix_ = []
@@ -60,14 +63,22 @@ def clustering(df_, t):
             m.append(mi)
     return classes_
 
-print("请输入数据源(csv格式)的路径:")
-path = input("path: ")
-df = pd.read_csv(path)
-print("请指定索引列,输入作为数据索引的列的名称:")
-index_name = input("column_name: ")
-df = df.set_index([index_name])
-print("请输入层次聚类法的阈值:")
-threshold = input("threshold: ")
-mat = clustering(df, float(threshold))
-for b in range(len(mat)):
-    print(mat[b])
+if __name__ == "__main__":
+    # 数据不需要索引列
+    print("请输入数据源(csv格式)的路径:")
+    path = input("path: ")
+    df = pd.read_csv(path)
+    print("请输入层次聚类法的阈值:")
+    threshold = input("threshold: ")
+    mat = clustering(df, float(threshold))
+    for b in range(len(mat)):
+        print(mat[b])
+
+    mark = ['Dr', 'Db', 'Dg', 'Dk', '^b', '+b', 'sb', 'db', '<b', 'pb']
+    plt.rcParams["axes.unicode_minus"] = False
+    for c in range(len(mat)):
+        for i in mat[c]:
+            plt.plot(i["x"], i["y"], mark[c])
+
+    plt.title("hierarchical")
+    plt.show()

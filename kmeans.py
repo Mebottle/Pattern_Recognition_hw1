@@ -1,9 +1,10 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 def calcu_distance(dot, center):
-    np_vec1 = dot.values
+    np_vec1 = dot
     np_vec2 = center
     return np.linalg.norm(np_vec1 - np_vec2)
 
@@ -23,7 +24,9 @@ def kmeans(df_, k):
             min_dot_center = np.inf
             min_index = 0
             for j in range(k):
-                d = calcu_distance(df_.loc[i], centers[j])
+                if not len(centers[j]):
+                    continue
+                d = calcu_distance(df_.loc[i].values, centers[j])
                 if d < min_dot_center:
                     min_dot_center = d
                     min_index = j
@@ -36,24 +39,30 @@ def kmeans(df_, k):
             for ind in index_set_h:
                 list_.append(df_.loc[ind].values)
             new_center_vec = np.mean(np.mat(list_), axis=0)
-            centers[h] = np.array(new_center_vec[0])
+            centers[h] = np.array(new_center_vec)[0]
     return obj_belong
 
-# 数据对象的索引请从0开始
-print("请输入数据源(csv格式)的路径:")
-path = input("path: ")
-df = pd.read_csv(path)
+if __name__ == "__main__":
+    # 数据不需要索引列
+    print("请输入数据源(csv格式)的路径:")
+    path = input("path: ")
+    df = pd.read_csv(path)
 
-print("请指定索引列,输入作为数据索引的列的名称:")
-index_name = input("column_name: ")
-del df[index_name]
+    print("请输入k值:")
+    k_ = int(input("k: "))
 
-print("请输入k值:")
-k_ = int(input("k: "))
+    belongs = kmeans(df, k_)
+    for c in range(k_):
+        indexes = np.where(belongs == c)[0]
+        print("class %d : " % c)
+        for ind in indexes:
+            print(df.loc[[ind]])
 
-belongs = kmeans(df, k_)
-for c in range(k_):
-    indexes = np.where(belongs == c)[0]
-    print("class %d : " % c)
-    for ind in indexes:
-        print(df.loc[[ind]])
+    mark = ['Dr', 'Db', 'Dg', 'Dk', '^b', '+b', 'sb', 'db', '<b', 'pb']
+    plt.rcParams["axes.unicode_minus"] = False
+    for c in range(3):
+        indexes = np.where(belongs == c)[0]
+        for i in indexes:
+            plt.plot(df.loc[i]["x"], df.loc[i]["y"], mark[c])
+    plt.title("k-means")
+    plt.show()

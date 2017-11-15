@@ -71,7 +71,7 @@ def calculate_differential_matrix(columns, series_s, obj_num):
         elif type_ == "3":
             numerical_d(series_s[key_], matrix, matrix_de)
         elif type_ == "4":
-            print("%s是序数属性,请输入所有状态的排位:\n例如属性状态有大中小三种状态,则输入:小 中 大")
+            print("%s是序数属性,请输入所有状态的排位:\n例如属性状态有大中小三种状态,则输入:小 中 大" % key_)
             sequence = input("order: ")
             sequence_new = sequence.split()
             sequence_dict = {}
